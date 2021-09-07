@@ -86,11 +86,32 @@ document.getElementById('button').addEventListener("click", () => {
               let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
               console.log(rowObject);
 			var r = 0, w = 0, retail_discount = 0, wholesale_discount = 0;
+			var retail_maxx = 0, retail_doritos = 0, retail_wafer = 0;
+			var retail_maxx_discount = 0; retail_doritos_discount = 0; retail_wafer_discount = 0;
+			var wholesale_maxx = 0, wholesale_doritos = 0, wholesale_wafer = 0;
+			var wholesale_maxx_discount = 0; wholesale_doritos_discount = 0; wholesale_wafer_discount = 0;
+			var total_maxx = 0; total_doritos = 0; total_wafer = 0;
+			var total_maxx_discount = 0; total_doritos_discount = 0; total_wafer_discount = 0;
 			var map = {};
 			var shopdetails = {};
 			  for (var k in rowObject) { 
 				if (parseInt(k) >= 6) { 
+					
+					if (parseInt(k) == 130 ) {
+						var a = 0 ;
+					}
 					if(rowObject[k].__EMPTY_9 != null && rowObject[k].__EMPTY_9.endsWith("Retail")){
+						
+						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX")) {
+							retail_maxx = retail_maxx + rowObject[k].__EMPTY_37;
+							retail_maxx_discount = retail_maxx_discount + rowObject[k].__EMPTY_34;
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos")) {
+							retail_doritos = retail_doritos + rowObject[k].__EMPTY_37;
+							retail_doritos_discount = retail_doritos_discount + rowObject[k].__EMPTY_34;
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style")) {
+							retail_wafer = retail_wafer + rowObject[k].__EMPTY_37;
+							retail_wafer_discount = retail_wafer_discount + rowObject[k].__EMPTY_34;
+						}
 						r+= rowObject[k].__EMPTY_37;
 						retail_discount+= rowObject[k].__EMPTY_34;
 						if (map[rowObject[k].__EMPTY_5] != null) {
@@ -114,6 +135,18 @@ document.getElementById('button').addEventListener("click", () => {
 							shopdetails[rowObject[k].__EMPTY_5] = details;
 						}
 					}  else if (rowObject[k].__EMPTY_9 != null && rowObject[k].__EMPTY_9.endsWith("WHOLESALE"))  {
+						
+						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX")) {
+							wholesale_maxx = wholesale_maxx + rowObject[k].__EMPTY_37;
+							wholesale_maxx_discount = wholesale_maxx_discount + rowObject[k].__EMPTY_34;
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos")) {
+							wholesale_doritos = wholesale_doritos + rowObject[k].__EMPTY_37;
+							wholesale_doritos_discount = wholesale_doritos_discount + rowObject[k].__EMPTY_34;
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style")) {
+							wholesale_wafer = wholesale_wafer + rowObject[k].__EMPTY_37;
+							wholesale_wafer_discount = wholesale_wafer_discount + rowObject[k].__EMPTY_34;
+						}
+						
 						w+= rowObject[k].__EMPTY_37;
 						wholesale_discount+= rowObject[k].__EMPTY_34;
 						if (map[rowObject[k].__EMPTY_5] != null) {
@@ -138,12 +171,19 @@ document.getElementById('button').addEventListener("click", () => {
 						}
 					}
 				}
+				total_maxx = retail_maxx + wholesale_maxx;
+				total_wafer = retail_wafer + wholesale_wafer;
+				total_doritos = retail_doritos + wholesale_doritos;
+				total_maxx_discount  = retail_maxx_discount + wholesale_maxx_discount;
+				total_wafer_discount = retail_wafer_discount + wholesale_wafer_discount;
+				total_doritos_discount = retail_doritos_discount + wholesale_doritos_discount;
+				
 			  }
 			  document.getElementById("Title").innerHTML = "Sales Stats";
 			  document.getElementById("From").innerHTML = "Date From : " + rowObject[1].__EMPTY_1 ;
 			  document.getElementById("To").innerHTML = " Date To : " + rowObject[2].__EMPTY_1;
 			  
-			  var table2 = "<table style='margin-left: 66px; '><tr><th> Discount Type </th> <th> Percentage </th> <th> Value </th></tr><tr><td> Retail Discount </td> <td> "+((retail_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+ retail_discount.toFixed(0) +"</td></tr><tr><td>Wholesale Discount</td><td>"+((wholesale_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+wholesale_discount.toFixed(0)+" </td></tr><tr><td>Total Discount </td><td>"+(((retail_discount/(retail_discount+wholesale_discount))*100) + ((wholesale_discount/(retail_discount+wholesale_discount))*100)).toFixed(2)+"%</td><td>"+(retail_discount+wholesale_discount).toFixed(0)+"</td></tr></table>";
+			  var table2 = "<table style='margin-left: 66px; '><tr><th> Discount Type </th> <th> Percentage </th> <th> Value </th></tr><tr><td> Retail Discount </td> <td> "+((retail_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+ retail_discount.toFixed(0) +"</td></tr><tr><td>Wholesale Discount</td><td>"+((wholesale_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+wholesale_discount.toFixed(0)+" </td></tr><tr><td>Total Discount </td><td>"+(((retail_discount/(retail_discount+wholesale_discount))*100) + ((wholesale_discount/(retail_discount+wholesale_discount))*100)).toFixed(2)+"%</td><td>"+(retail_discount+wholesale_discount).toFixed(0)+"</td></tr></table>          <table style='margin-left: 66px; '><tr><th> Name </th> <th> Discount  </th> <th> Value </th></tr><tr><td> Total Maxx </td> <td> "+ (total_maxx_discount).toFixed(2)+"</td><td>"+ total_maxx.toFixed(0) +"</td></tr><tr><td>Total Wafer Style</td><td>"+(total_wafer_discount).toFixed(2)+"</td><td>"+total_wafer.toFixed(0)+" </td></tr><tr><td>Total Doritos </td><td>"+(total_doritos_discount).toFixed(2)+"</td><td>"+(total_doritos).toFixed(0)+"</td></tr></table>";
 			  document.getElementById("Discount").innerHTML = table2;
 			  var table3 = "<table class='table-sortable' style='margin-left: 2%;'><thead><tr><th> ID </th> <th> ShopName </th> <th> Type </th> <th> SKU_Count </th> </tr></thead><tbody>";
 			  var retailmap = {};
@@ -188,7 +228,7 @@ document.getElementById('button').addEventListener("click", () => {
 			  var All_Wholesale_Shops = 28;
 			  
 			  var table1 = "<table style='margin-left: 13px;margin-right: 0px;width: 115%; '><tr><th> Type </th> <th> Percentage </th> <th> Value </th> <th> Shops Billed  </th> <th> Shops Unbilled </th> <th> Less_SKU_Count</th></tr><tr><td> Retail </td> <td> "+((r/(r+w))*100).toFixed(2)+"%</td><td>"+ r.toFixed(0) +"</td><td> " + total_retail_shops + " </td> <td> " + (All_Retail_Shops - total_retail_shops) + " ("+(((All_Retail_Shops - total_retail_shops)/(All_Retail_Shops))*100).toFixed(0)+"%) </td> <td> " + retail_less_sku_count  + " (Below 8) </td></tr><tr><td>Wholesale</td><td>"+((w/(r+w))*100).toFixed(2)+"%</td><td>"+w.toFixed(0)+" </td><td>"+total_wholesale_shops+"</td> <td> " + (All_Wholesale_Shops - total_wholesale_shops)+ " ("+(((All_Wholesale_Shops - total_wholesale_shops)/(All_Wholesale_Shops))*100).toFixed(0)+"%)</td><td>"+ wholesale_less_sku_count +" (Below 6) </td></tr><tr><td>Total Trade Price </td><td>"+(((r/(r+w))*100) + ((w/(r+w))*100)).toFixed(2)+"%</td><td>"+(r+w).toFixed(0)+"</td><td>"+ (total_retail_shops+total_wholesale_shops).toFixed(0)+"</td> <td> " + ((All_Retail_Shops + All_Wholesale_Shops) - (total_retail_shops+total_wholesale_shops)).toFixed(0)+ " ("+(((((All_Retail_Shops + All_Wholesale_Shops) - (total_retail_shops+total_wholesale_shops)))/(All_Retail_Shops+All_Wholesale_Shops))*100).toFixed(0)+"%)</td><td>"+ (retail_less_sku_count+wholesale_less_sku_count).toFixed(0) +"</td></tr></table>";
-			  document.getElementById("Ratios").innerHTML = table1 + "<div> <h3 id = 'advance'> Advance Calculations </h3>  <div class='row' id = 'row1'> <div class='col-md-3' ></div> <div class='col-md-3'  style=' padding-left: 5%; '>Retail</div> <div class='col-md-3' >Wholesale </div> <div class='col-md-3' > Total</div></div><div class='row' id = 'row2'> <div class='col-md-3' style=' padding-left: 6%; ' >Total</div> <div class='col-md-3' ><input type='Number' class='form-control' id='reatilpercentage' placeholder='Enter in %' min='0' max='100' onkeyup='check_percentage(this.value)'></div> <div class='col-md-3' > <input type='text' class='form-control'  id='disabledInput' value = '0%' disabled ></div> <div class='col-md-3' ><input type='Number' class='form-control' id='totalamount' placeholder='Enter in Num' onkeyup='check_totalvalue(this.value)'> </div></div><div class='row' id = 'row3'> <div class='col-md-3' >Current Amount </div> <div class='col-md-3' id = 'retailcurrentamount' ></div> <div class='col-md-3' id = 'wholesalecurrentamount' > </div> <div class='col-md-3' id = 'totalcurrentamount' > </div></div></div><div class='row' id = 'row4'> <div class='col-md-3' >Pending Amount </div> <div class='col-md-3' id = 'rentailpending' style=' padding-top: 1.5%; '></div> <div class='col-md-3' id = 'wholesalepending' style=' padding-top: 1.5%; '> </div> <div class='col-md-3' id = 'totalpending' style=' padding-top: 1.5%;'> </div></div></div>";
+			  document.getElementById("Ratios").innerHTML = table1 + "<div> <h3 id = 'advance' style= ' margin-top: 34%; '> Advance Calculations </h3>  <div class='row' id = 'row1'> <div class='col-md-3' ></div> <div class='col-md-3'  style=' padding-left: 5%; '>Retail</div> <div class='col-md-3' >Wholesale </div> <div class='col-md-3' > Total</div></div><div class='row' id = 'row2'> <div class='col-md-3' style=' padding-left: 6%; ' >Total</div> <div class='col-md-3' ><input type='Number' class='form-control' id='reatilpercentage' placeholder='Enter in %' min='0' max='100' onkeyup='check_percentage(this.value)'></div> <div class='col-md-3' > <input type='text' class='form-control'  id='disabledInput' value = '0%' disabled ></div> <div class='col-md-3' ><input type='Number' class='form-control' id='totalamount' placeholder='Enter in Num' onkeyup='check_totalvalue(this.value)'> </div></div><div class='row' id = 'row3'> <div class='col-md-3' >Current Amount </div> <div class='col-md-3' id = 'retailcurrentamount' ></div> <div class='col-md-3' id = 'wholesalecurrentamount' > </div> <div class='col-md-3' id = 'totalcurrentamount' > </div></div></div><div class='row' id = 'row4'> <div class='col-md-3' >Pending Amount </div> <div class='col-md-3' id = 'rentailpending' style=' padding-top: 1.5%; '></div> <div class='col-md-3' id = 'wholesalepending' style=' padding-top: 1.5%; '> </div> <div class='col-md-3' id = 'totalpending' style=' padding-top: 1.5%;'> </div></div></div>";
 
 			  document.getElementById("SkuCount").innerHTML = table3;
 			  document.getElementById("retailcurrentamount").innerHTML = r.toFixed(0) + "<span style='font-size: 12px; background-color: rgb(0 123 255 / 50%); '> ("+((r/(r+w))*100).toFixed(2)+"%)&nbsp</span>";
