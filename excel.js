@@ -94,6 +94,7 @@ document.getElementById('button').addEventListener("click", () => {
 			var total_maxx_discount = 0; total_doritos_discount = 0; total_wafer_discount = 0;
 			var map = {};
 			var shopdetails = {};
+			var individual_Shop_value = {};
 			  for (var k in rowObject) { 
 				if (parseInt(k) >= 6) { 
 					
@@ -113,6 +114,12 @@ document.getElementById('button').addEventListener("click", () => {
 							retail_wafer_discount = retail_wafer_discount + rowObject[k].__EMPTY_34;
 						}
 						r+= rowObject[k].__EMPTY_37;
+						if (individual_Shop_value[rowObject[k].__EMPTY_5] == null){
+							individual_Shop_value[rowObject[k].__EMPTY_5] = (rowObject[k].__EMPTY_37);
+						} else {
+							individual_Shop_value[rowObject[k].__EMPTY_5] += (rowObject[k].__EMPTY_37);
+						}
+						 
 						retail_discount+= rowObject[k].__EMPTY_34;
 						if (map[rowObject[k].__EMPTY_5] != null) {
 							var value = {};
@@ -146,7 +153,11 @@ document.getElementById('button').addEventListener("click", () => {
 							wholesale_wafer = wholesale_wafer + rowObject[k].__EMPTY_37;
 							wholesale_wafer_discount = wholesale_wafer_discount + rowObject[k].__EMPTY_34;
 						}
-						
+						if (individual_Shop_value[rowObject[k].__EMPTY_5] == null){
+							individual_Shop_value[rowObject[k].__EMPTY_5] = (rowObject[k].__EMPTY_37);
+						} else {
+							individual_Shop_value[rowObject[k].__EMPTY_5] += (rowObject[k].__EMPTY_37);
+						}
 						w+= rowObject[k].__EMPTY_37;
 						wholesale_discount+= rowObject[k].__EMPTY_34;
 						if (map[rowObject[k].__EMPTY_5] != null) {
@@ -185,7 +196,7 @@ document.getElementById('button').addEventListener("click", () => {
 			  
 			  var table2 = "<table style='margin-left: 66px; '><tr><th> Discount Type </th> <th> Percentage </th> <th> Value </th></tr><tr><td> Retail Discount </td> <td> "+((retail_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+ retail_discount.toFixed(0) +"</td></tr><tr><td>Wholesale Discount</td><td>"+((wholesale_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+wholesale_discount.toFixed(0)+" </td></tr><tr><td>Total Discount </td><td>"+(((retail_discount/(retail_discount+wholesale_discount))*100) + ((wholesale_discount/(retail_discount+wholesale_discount))*100)).toFixed(2)+"%</td><td>"+(retail_discount+wholesale_discount).toFixed(0)+"</td></tr></table>          <table style='margin-left: 66px; '><tr><th> Name </th> <th> Discount  </th> <th> Value </th></tr><tr><td> Total Maxx </td> <td> "+ (total_maxx_discount).toFixed(2)+"</td><td>"+ total_maxx.toFixed(0) +"</td></tr><tr><td>Total Wafer Style</td><td>"+(total_wafer_discount).toFixed(2)+"</td><td>"+total_wafer.toFixed(0)+" </td></tr><tr><td>Total Doritos </td><td>"+(total_doritos_discount).toFixed(2)+"</td><td>"+(total_doritos).toFixed(0)+"</td></tr></table>";
 			  document.getElementById("Discount").innerHTML = table2;
-			  var table3 = "<table class='table-sortable' style='margin-left: 2%;'><thead><tr><th> ID </th> <th> ShopName </th> <th> Type </th> <th> SKU_Count </th> </tr></thead><tbody>";
+			  var table3 = "<table class='table-sortable' style='margin-left: 2%;'><thead><tr><th> ID </th> <th> ShopName </th> <th> Type </th> <th> SKU_Count </th> <th> Value </th> </tr></thead><tbody>";
 			  var retailmap = {};
 			  var wholesalemap = {};
 			  for (var i in map) {
@@ -209,7 +220,7 @@ document.getElementById('button').addEventListener("click", () => {
 			  			retail_less_sku_count++;
 			  		} 
 			  		total_retail_shops++;
-				  table3+= "<tr style= 'background-color: yellow;'><td>"+ sortretailmap[i][0] + "</td><td>"+shopdetails[sortretailmap[i][0]][0]+"</td><td>"+shopdetails[sortretailmap[i][0]][1]+"</td><td "+skunotmet+">"+ sortretailmap[i][1] +"</td></tr>";
+				  table3+= "<tr style= 'background-color: yellow;'><td>"+ sortretailmap[i][0] + "</td><td>"+shopdetails[sortretailmap[i][0]][0]+"</td><td>"+shopdetails[sortretailmap[i][0]][1]+"</td><td "+skunotmet+">"+ sortretailmap[i][1] +"</td> <td> " + individual_Shop_value[sortretailmap[i][0]].toFixed(0)+ "</td></tr>";
 			  }
 
 			  for (var i in sortwholesalemap) {
@@ -219,7 +230,7 @@ document.getElementById('button').addEventListener("click", () => {
 			  			wholesale_less_sku_count++;
 			  		} 
 			  		total_wholesale_shops++;
-				  table3+= "<tr style= 'background-color: rgb(0 123 255 / 68%); '><td>"+ sortwholesalemap[i][0] + "</td><td>"+shopdetails[sortwholesalemap[i][0]][0]+"</td><td>"+shopdetails[sortwholesalemap[i][0]][1]+"</td><td "+skunotmet+">"+ sortwholesalemap[i][1] +"</td></tr>";
+				  table3+= "<tr style= 'background-color: rgb(0 123 255 / 68%); '><td>"+ sortwholesalemap[i][0] + "</td><td>"+shopdetails[sortwholesalemap[i][0]][0]+"</td><td>"+shopdetails[sortwholesalemap[i][0]][1]+"</td><td "+skunotmet+">"+ sortwholesalemap[i][1] +"</td> <td> " + individual_Shop_value[sortwholesalemap[i][0]].toFixed(0) +"</td></tr>";
 			  }
 
 			  
