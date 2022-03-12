@@ -86,15 +86,49 @@ document.getElementById('button').addEventListener("click", () => {
               let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
               console.log(rowObject);
 			var r = 0, w = 0, retail_discount = 0, wholesale_discount = 0;
-			var retail_maxx = 0, retail_doritos = 0, retail_wafer = 0;
-			var retail_maxx_discount = 0; retail_doritos_discount = 0; retail_wafer_discount = 0;
-			var wholesale_maxx = 0, wholesale_doritos = 0, wholesale_wafer = 0;
-			var wholesale_maxx_discount = 0; wholesale_doritos_discount = 0; wholesale_wafer_discount = 0;
-			var total_maxx = 0; total_doritos = 0; total_wafer = 0;
-			var total_maxx_discount = 0; total_doritos_discount = 0; total_wafer_discount = 0;
+			var retail_maxx = 0, retail_doritos = 0, retail_wafer = 0, retail_puffcorn = 0, retail_sizzlin = 0;
+			var retail_maxx_discount = 0; retail_doritos_discount = 0; retail_wafer_discount = 0, retail_puffcorn_discount = 0, retail_sizzlin_discount = 0;
+			var wholesale_maxx = 0, wholesale_doritos = 0, wholesale_wafer = 0, wholesale_puffcorn = 0, wholesale_sizzlin = 0;
+			var wholesale_maxx_discount = 0; wholesale_doritos_discount = 0; wholesale_wafer_discount = 0, wholesale_puffcorn_discount = 0, wholesale_sizzlin_discount = 0;
+			var total_maxx = 0; total_doritos = 0; total_wafer = 0, total_puffcorn = 0, total_sizzlin = 0;
+			var total_maxx_discount = 0; total_doritos_discount = 0; total_wafer_discount = 0, total_puffcorn_discount = 0, total_sizzlin_discount = 0;
 			var map = {};
 			var shopdetails = {};
 			var individual_Shop_value = {};
+
+			var maxx_retail_shops_count = {};
+			var doritos_retail_shops_count = {};
+			var waferstyle_retail_shops_count = {};
+			var puffcorn_retail_shops_count = {};
+			var sizzlin_retail_shops_count = {};
+			var tenrupees_retail_shops_count = {};
+
+			var maxx_ws_shops_count = {};
+			var doritos_ws_shops_count = {};
+			var waferstyle_ws_shops_count = {};
+			var puffcorn_ws_shops_count = {};
+			var sizzlin_ws_shops_count = {};
+			var tenrupees_ws_shops_count = {};
+
+			var maxx_counter = 0;
+			var doritos_counter = 0;
+			var waferstyle_counter = 0;
+			var puffcorn_counter = 0;
+			var sizzlin_counter = 0;
+			var tenrupees_counter = 0;
+
+			var maxx_ws_counter = 0;
+			var doritos_ws_counter = 0;
+			var waferstyle_ws_counter = 0;
+			var puffcorn_ws_counter = 0;
+			var sizzlin_ws_counter = 0;
+			var tenrupees_ws_counter = 0;
+
+			var All_Retail_Shops = 119;
+			var All_Wholesale_Shops = 28;
+			var tenrupees_discount = 0;
+			var tenrupees_value = 0;
+
 			  for (var k in rowObject) { 
 				if (parseInt(k) >= 6) { 
 					
@@ -103,17 +137,50 @@ document.getElementById('button').addEventListener("click", () => {
 					}
 					if(rowObject[k].__EMPTY_9 != null && rowObject[k].__EMPTY_9.endsWith("Retail")){
 						
-						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX")) {
+						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX") && rowObject[k].__EMPTY_32 == '10') {
 							retail_maxx = retail_maxx + rowObject[k].__EMPTY_37;
 							retail_maxx_discount = retail_maxx_discount + rowObject[k].__EMPTY_34;
-						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos")) {
+							if (maxx_retail_shops_count[rowObject[k].__EMPTY_5] == null){
+									maxx_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+									maxx_counter += 1;
+							}
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos") && rowObject[k].__EMPTY_32 == '10') {
 							retail_doritos = retail_doritos + rowObject[k].__EMPTY_37;
 							retail_doritos_discount = retail_doritos_discount + rowObject[k].__EMPTY_34;
-						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style")) {
+							if (doritos_retail_shops_count[rowObject[k].__EMPTY_5] == null){
+									doritos_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+									doritos_counter += 1;
+							}
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style") && rowObject[k].__EMPTY_32 == '10') {
 							retail_wafer = retail_wafer + rowObject[k].__EMPTY_37;
 							retail_wafer_discount = retail_wafer_discount + rowObject[k].__EMPTY_34;
+							if (waferstyle_retail_shops_count[rowObject[k].__EMPTY_5] == null){
+									waferstyle_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+									waferstyle_counter += 1;
+							}
+						}
+						 else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Puffcorn") && rowObject[k].__EMPTY_32 == '10') {
+							retail_puffcorn = retail_puffcorn + rowObject[k].__EMPTY_37;
+							retail_puffcorn_discount = retail_puffcorn_discount + rowObject[k].__EMPTY_34;
+							if (puffcorn_retail_shops_count[rowObject[k].__EMPTY_5] == null){
+									puffcorn_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+									puffcorn_counter += 1;
+							}
+						}
+						else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_20.endsWith("Sizzlin Hot") && rowObject[k].__EMPTY_32 == '10') {
+							retail_sizzlin = retail_sizzlin + rowObject[k].__EMPTY_37;
+							retail_sizzlin_discount = retail_sizzlin_discount + rowObject[k].__EMPTY_34;
+							if (sizzlin_retail_shops_count[rowObject[k].__EMPTY_5] == null){
+									sizzlin_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+									sizzlin_counter += 1;
+							}
 						}
 						r+= rowObject[k].__EMPTY_37;
+
+						if (tenrupees_retail_shops_count[rowObject[k].__EMPTY_5] == null && rowObject[k].__EMPTY_32 == '10') {
+							tenrupees_retail_shops_count[rowObject[k].__EMPTY_5] = 1;
+							tenrupees_counter += 1;
+						}
 						if (individual_Shop_value[rowObject[k].__EMPTY_5] == null){
 							individual_Shop_value[rowObject[k].__EMPTY_5] = (rowObject[k].__EMPTY_37);
 						} else {
@@ -141,17 +208,49 @@ document.getElementById('button').addEventListener("click", () => {
 							details.push(rowObject[k].__EMPTY_9);
 							shopdetails[rowObject[k].__EMPTY_5] = details;
 						}
-					}  else if (rowObject[k].__EMPTY_9 != null && rowObject[k].__EMPTY_9.endsWith("WHOLESALE"))  {
+					}  else if (rowObject[k].__EMPTY_9 != null && rowObject[k].__EMPTY_9.endsWith("WHOLESALE") )  {
 						
-						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX")) {
+						if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("MAXX") && rowObject[k].__EMPTY_32 == '10') {
 							wholesale_maxx = wholesale_maxx + rowObject[k].__EMPTY_37;
 							wholesale_maxx_discount = wholesale_maxx_discount + rowObject[k].__EMPTY_34;
-						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos")) {
+							if (maxx_ws_shops_count[rowObject[k].__EMPTY_5] == null){
+									maxx_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+									maxx_ws_counter += 1;
+							}
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Doritos") && rowObject[k].__EMPTY_32 == '10') {
 							wholesale_doritos = wholesale_doritos + rowObject[k].__EMPTY_37;
 							wholesale_doritos_discount = wholesale_doritos_discount + rowObject[k].__EMPTY_34;
-						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style")) {
+							if (doritos_ws_shops_count[rowObject[k].__EMPTY_5] == null){
+									doritos_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+									doritos_ws_counter += 1;
+							}
+						} else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Wafer Style") && rowObject[k].__EMPTY_32 == '10') {
 							wholesale_wafer = wholesale_wafer + rowObject[k].__EMPTY_37;
 							wholesale_wafer_discount = wholesale_wafer_discount + rowObject[k].__EMPTY_34;
+							if (waferstyle_ws_shops_count[rowObject[k].__EMPTY_5] == null){
+									waferstyle_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+									waferstyle_ws_counter += 1;
+							}
+						}else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_19.endsWith("Puffcorn") && rowObject[k].__EMPTY_32 == '10') {
+							wholesale_puffcorn  = wholesale_puffcorn + rowObject[k].__EMPTY_37;
+							wholesale_puffcorn_discount = wholesale_puffcorn_discount + rowObject[k].__EMPTY_34;
+							if (puffcorn_ws_shops_count[rowObject[k].__EMPTY_5] == null){
+									puffcorn_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+									puffcorn_ws_counter += 1;
+							}
+						}
+						else if (rowObject[k].__EMPTY_19 != null && rowObject[k].__EMPTY_20.endsWith("Sizzlin Hot") && rowObject[k].__EMPTY_32 == '10') {
+							wholesale_sizzlin = wholesale_sizzlin + rowObject[k].__EMPTY_37;
+							wholesale_sizzlin_discount = wholesale_sizzlin_discount + rowObject[k].__EMPTY_34;
+							if (sizzlin_ws_shops_count[rowObject[k].__EMPTY_5] == null){
+									sizzlin_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+									sizzlin_ws_counter += 1;
+							}
+						}
+						if (tenrupees_ws_shops_count[rowObject[k].__EMPTY_5] == null && rowObject[k].__EMPTY_32 == '10') {
+							tenrupees_ws_shops_count[rowObject[k].__EMPTY_5] = 1;
+							tenrupees_ws_counter += 1;
+
 						}
 						if (individual_Shop_value[rowObject[k].__EMPTY_5] == null){
 							individual_Shop_value[rowObject[k].__EMPTY_5] = (rowObject[k].__EMPTY_37);
@@ -181,20 +280,27 @@ document.getElementById('button').addEventListener("click", () => {
 							shopdetails[rowObject[k].__EMPTY_5] = details;
 						}
 					}
+					if (rowObject[k].__EMPTY_37 != null && rowObject[k].__EMPTY_32 == '10') {
+					 	tenrupees_value = tenrupees_value + rowObject[k].__EMPTY_37;
+					 	tenrupees_discount = tenrupees_discount + rowObject[k].__EMPTY_34;						
+					}
 				}
-				total_maxx = retail_maxx + wholesale_maxx;
+			  }
+			  total_maxx = retail_maxx + wholesale_maxx;
 				total_wafer = retail_wafer + wholesale_wafer;
 				total_doritos = retail_doritos + wholesale_doritos;
+				total_puffcorn = retail_puffcorn + wholesale_puffcorn;
+				total_sizzlin = retail_sizzlin + wholesale_sizzlin;
 				total_maxx_discount  = retail_maxx_discount + wholesale_maxx_discount;
 				total_wafer_discount = retail_wafer_discount + wholesale_wafer_discount;
 				total_doritos_discount = retail_doritos_discount + wholesale_doritos_discount;
-				
-			  }
+				total_puffcorn_discount = retail_puffcorn_discount + wholesale_puffcorn_discount;
+				total_sizzlin_discount = retail_sizzlin_discount + wholesale_sizzlin_discount;
 			  document.getElementById("Title").innerHTML = "Sales Stats";
 			  document.getElementById("From").innerHTML = "Date From : " + rowObject[1].__EMPTY_1 ;
 			  document.getElementById("To").innerHTML = " Date To : " + rowObject[2].__EMPTY_1;
 			  
-			  var table2 = "<table style='margin-left: 40px; '><tr><th> Discount Type </th> <th> Percentage </th> <th> Value </th></tr><tr><td> Retail Discount </td> <td> "+((retail_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+ retail_discount.toFixed(0) +"</td></tr><tr><td>Wholesale Discount</td><td>"+((wholesale_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+wholesale_discount.toFixed(0)+" </td></tr><tr><td>Total Discount </td><td>"+(((retail_discount/(retail_discount+wholesale_discount))*100) + ((wholesale_discount/(retail_discount+wholesale_discount))*100)).toFixed(2)+"%</td><td>"+(retail_discount+wholesale_discount).toFixed(0)+"</td></tr></table>          <table style='margin-left: 40px; '><tr><th> Name </th> <th> Discount  </th> <th> Value </th></tr><tr><td> Total Maxx </td> <td> "+ (total_maxx_discount).toFixed(2)+"</td><td>"+ total_maxx.toFixed(0) +"</td></tr><tr><td>Total Wafer Style</td><td>"+(total_wafer_discount).toFixed(2)+"</td><td>"+total_wafer.toFixed(0)+" </td></tr><tr><td>Total Doritos </td><td>"+(total_doritos_discount).toFixed(2)+"</td><td>"+(total_doritos).toFixed(0)+"</td></tr></table>";
+			  var table2 = "<table style='margin-left: 40px; '><tr><th> Discount Type </th> <th> Percentage </th> <th> Value </th></tr><tr><td> Retail Discount </td> <td> "+((retail_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+ retail_discount.toFixed(0) +"</td></tr><tr><td>Wholesale Discount</td><td>"+((wholesale_discount/(retail_discount+wholesale_discount))*100).toFixed(2)+"%</td><td>"+wholesale_discount.toFixed(0)+" </td></tr><tr><td>Total Discount </td><td>"+(((retail_discount/(retail_discount+wholesale_discount))*100) + ((wholesale_discount/(retail_discount+wholesale_discount))*100)).toFixed(2)+"%</td><td>"+(retail_discount+wholesale_discount).toFixed(0)+"</td></tr></table><table style='margin-left: 40px; '><tr><th> Name (10Rs) </th> <th> Discount  </th> <th> Value </th><th> Shops Count </th></tr><tr><td> Total Maxx </td> <td> "+ (total_maxx_discount).toFixed(2)+"</td><td>"+ total_maxx.toFixed(0) +"</td><td>" + (maxx_counter+maxx_ws_counter) +" ("+ ((maxx_counter+maxx_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ maxx_counter +" ("+ ((maxx_counter/All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ maxx_ws_counter +" ( " + ((maxx_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%)) </td></tr><tr><td>Total Wafer Style</td><td>"+(total_wafer_discount).toFixed(2)+"</td><td>"+total_wafer.toFixed(0)+" </td><td>" + (waferstyle_counter+waferstyle_ws_counter) +" ("+ ((waferstyle_counter+waferstyle_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ waferstyle_counter +" ("+ ((waferstyle_counter/All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ waferstyle_ws_counter +" ( " + ((waferstyle_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%)) </td></tr><tr><td>Total Doritos </td><td>"+(total_doritos_discount).toFixed(2)+"</td><td>"+(total_doritos).toFixed(0)+"</td><td>" + ( doritos_counter + doritos_ws_counter ) +" ("+ ((doritos_counter+doritos_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ doritos_counter +" ("+ ((doritos_counter/All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ doritos_ws_counter +" ( " + ((doritos_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%))  </td></tr><tr><td>Total Puffcorn  </td><td>"+(total_puffcorn_discount).toFixed(2)+"</td><td>"+(total_puffcorn).toFixed(0)+"</td><td>" + (puffcorn_counter + puffcorn_ws_counter) +" ("+ ((puffcorn_counter+puffcorn_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ puffcorn_counter +" ("+ ((puffcorn_counter/All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ puffcorn_ws_counter +" ( " + ((puffcorn_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%)) </td></tr><tr><td>Total Sizzlin </td><td>"+( total_sizzlin_discount).toFixed(2)+"</td><td>"+(total_sizzlin).toFixed(0)+"</td><td>" + ( sizzlin_counter + sizzlin_ws_counter) +" ("+ ((sizzlin_counter+sizzlin_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ sizzlin_counter +" ("+ (( sizzlin_counter/All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ sizzlin_ws_counter +" ( " + ((sizzlin_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%))  </td></tr><tr><td>Total 10Rs (Inc Above) </td><td>"+(tenrupees_discount).toFixed(2)+"</td><td>"+(tenrupees_value).toFixed(0)+"</td><td>" + ( tenrupees_counter + tenrupees_ws_counter) +" ("+ ((tenrupees_counter+tenrupees_ws_counter)/(All_Retail_Shops+All_Wholesale_Shops)*100).toFixed(0)+"%) - (RET - "+ tenrupees_counter +" ("+ (( tenrupees_counter /All_Retail_Shops)*100).toFixed(0) + "%), WS - "+ tenrupees_ws_counter +" ( " + ((tenrupees_ws_counter/All_Wholesale_Shops)*100).toFixed(0)  + "%)) </td></tr></table>";
 			  document.getElementById("Discount").innerHTML = table2;
 			  var table3 = "<table class='table-sortable' style='margin-left: -2%;'><thead><tr><th> ID </th> <th> ShopName </th> <th> Type </th> <th> SKU_Count </th> <th> Value </th> </tr></thead><tbody>";
 			  var retailmap = {};
@@ -235,11 +341,10 @@ document.getElementById('button').addEventListener("click", () => {
 
 			  
 			  table3+= "</tbody></table>";
-			  var All_Retail_Shops = 119;
-			  var All_Wholesale_Shops = 28;
+			  
 			  
 			  var table1 = "<table style='margin-left: 2px;margin-right: 0px;width: 115%; '><tr><th> Type </th> <th> Percentage </th> <th> Value </th> <th> Shops Billed  </th> <th> Shops Unbilled </th> <th> Less_SKU_Count</th></tr><tr><td> Retail </td> <td> "+((r/(r+w))*100).toFixed(2)+"%</td><td>"+ r.toFixed(0) +"</td><td> " + total_retail_shops + " </td> <td> " + (All_Retail_Shops - total_retail_shops) + " ("+(((All_Retail_Shops - total_retail_shops)/(All_Retail_Shops))*100).toFixed(0)+"%) </td> <td> " + retail_less_sku_count  + " (Below 8) </td></tr><tr><td>Wholesale</td><td>"+((w/(r+w))*100).toFixed(2)+"%</td><td>"+w.toFixed(0)+" </td><td>"+total_wholesale_shops+"</td> <td> " + (All_Wholesale_Shops - total_wholesale_shops)+ " ("+(((All_Wholesale_Shops - total_wholesale_shops)/(All_Wholesale_Shops))*100).toFixed(0)+"%)</td><td>"+ wholesale_less_sku_count +" (Below 6) </td></tr><tr><td>Total Trade Price </td><td>"+(((r/(r+w))*100) + ((w/(r+w))*100)).toFixed(2)+"%</td><td>"+(r+w).toFixed(0)+"</td><td>"+ (total_retail_shops+total_wholesale_shops).toFixed(0)+"</td> <td> " + ((All_Retail_Shops + All_Wholesale_Shops) - (total_retail_shops+total_wholesale_shops)).toFixed(0)+ " ("+(((((All_Retail_Shops + All_Wholesale_Shops) - (total_retail_shops+total_wholesale_shops)))/(All_Retail_Shops+All_Wholesale_Shops))*100).toFixed(0)+"%)</td><td>"+ (retail_less_sku_count+wholesale_less_sku_count).toFixed(0) +"</td></tr></table>";
-			  document.getElementById("Ratios").innerHTML = table1 + "<div> <h3 id = 'advance' style= ' margin-top: 34%; '> Advance Calculations </h3>  <div class='row' id = 'row1'> <div class='col-md-3' ></div> <div class='col-md-3'  style=' padding-left: 5%; '>Retail</div> <div class='col-md-3' >Wholesale </div> <div class='col-md-3' > Total</div></div><div class='row' id = 'row2'> <div class='col-md-3' style=' padding-left: 6%; ' >Total</div> <div class='col-md-3' ><input type='Number' class='form-control' id='reatilpercentage' placeholder='Enter in %' min='0' max='100' onkeyup='check_percentage(this.value)'></div> <div class='col-md-3' > <input type='text' class='form-control'  id='disabledInput' value = '0%' disabled ></div> <div class='col-md-3' ><input type='Number' class='form-control' id='totalamount' placeholder='Enter in Num' onkeyup='check_totalvalue(this.value)'> </div></div><div class='row' id = 'row3'> <div class='col-md-3' >Current Amount </div> <div class='col-md-3' id = 'retailcurrentamount' ></div> <div class='col-md-3' id = 'wholesalecurrentamount' > </div> <div class='col-md-3' id = 'totalcurrentamount' > </div></div></div><div class='row' id = 'row4'> <div class='col-md-3' >Pending Amount </div> <div class='col-md-3' id = 'rentailpending' style=' padding-top: 1.5%; '></div> <div class='col-md-3' id = 'wholesalepending' style=' padding-top: 1.5%; '> </div> <div class='col-md-3' id = 'totalpending' style=' padding-top: 1.5%;'> </div></div><div ><img id = 'mobilenumber' src='MobileNumber.PNG'></img></div></div>";
+			  document.getElementById("Ratios").innerHTML = table1 + "<div> <h3 id = 'advance' style= ' margin-top: 50%; '> Advance Calculations </h3>  <div class='row' id = 'row1'> <div class='col-md-3' ></div> <div class='col-md-3'  style=' padding-left: 5%; '>Retail</div> <div class='col-md-3' >Wholesale </div> <div class='col-md-3' > Total</div></div><div class='row' id = 'row2'> <div class='col-md-3' style=' padding-left: 6%; ' >Total</div> <div class='col-md-3' ><input type='Number' class='form-control' id='reatilpercentage' placeholder='Enter in %' min='0' max='100' onkeyup='check_percentage(this.value)'></div> <div class='col-md-3' > <input type='text' class='form-control'  id='disabledInput' value = '0%' disabled ></div> <div class='col-md-3' ><input type='Number' class='form-control' id='totalamount' placeholder='Enter in Num' onkeyup='check_totalvalue(this.value)'> </div></div><div class='row' id = 'row3'> <div class='col-md-3' >Current Amount </div> <div class='col-md-3' id = 'retailcurrentamount' ></div> <div class='col-md-3' id = 'wholesalecurrentamount' > </div> <div class='col-md-3' id = 'totalcurrentamount' > </div></div></div><div class='row' id = 'row4'> <div class='col-md-3' >Pending Amount </div> <div class='col-md-3' id = 'rentailpending' style=' padding-top: 1.5%; '></div> <div class='col-md-3' id = 'wholesalepending' style=' padding-top: 1.5%; '> </div> <div class='col-md-3' id = 'totalpending' style=' padding-top: 1.5%;'> </div></div><div ><img id = 'mobilenumber' src='MobileNumber.png'></img></div></div>";
 
 			  document.getElementById("SkuCount").innerHTML = table3;
 			  document.getElementById("retailcurrentamount").innerHTML = r.toFixed(0) + "<span style='font-size: 12px; background-color: rgb(0 123 255 / 50%); '> ("+((r/(r+w))*100).toFixed(2)+"%)&nbsp</span>";
